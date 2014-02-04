@@ -12,7 +12,7 @@ Feature: API Test
       hRoCX3Jpe96eggiZ4NqMJA.png
     """
     #Then print response
-    Then the response code should be 200
+    Then the response code should be 201
 
 
   Scenario: Send PNG Image with wrong Content-Type

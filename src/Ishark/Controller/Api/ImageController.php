@@ -3,7 +3,9 @@
 namespace Ishark\Controller\Api;
 
 use Ishark\Controller\BaseController;
+use Ishark\Services\ContentTypeService;
 use Ishark\Services\UploadService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,10 +31,10 @@ class ImageController extends BaseController
 
         /** @var UploadService $uploadService */
         $uploadService = $this->getApp()['service.upload'];
-        $uploadService->checkContentType($contentType);
-        $uploadService->saveFile($content, $contentType);
+        ContentTypeService::check($contentType);
+        $filename = $uploadService->saveFile($content, $contentType);
 
-        return Response::create();
+        return JsonResponse::create(['filename' => $filename, 'url' => 'http://ishark.tk/' . $filename], 201);
     }
 
 } 

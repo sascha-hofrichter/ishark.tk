@@ -2,7 +2,6 @@
 
 namespace Ishark\Services;
 
-
 use Ishark\Application;
 
 class UploadService
@@ -17,21 +16,10 @@ class UploadService
     }
 
     /**
-     * @param string $contentType
-     *
-     * @throws \Exception
-     */
-    public function checkContentType($contentType)
-    {
-        if (!in_array($contentType, array('image/png', 'image/gif', 'image/jpg', 'image/jpeg'))) {
-            throw new \Exception('Wrong Content-Type', 500);
-        }
-    }
-
-    /**
      * @param string $content
      * @param string $contentType
      *
+     * @return string
      * @throws \Exception
      */
     public function saveFile($content, $contentType)
@@ -48,36 +36,19 @@ class UploadService
         if (array_key_exists('mime', $imageInfo)) {
             $contentType = $imageInfo['mime'];
             try {
-                $this->checkContentType($imageInfo['mime']);
+                ContentTypeService::check($imageInfo['mime']);
             } catch (\Exception $e) {
                 unlink($tmpPath);
                 throw $e;
             }
         }
-        $newFileName = $this->getFileName($tmpPath, $contentType);
-        rename($tmpPath, $this->app->getWebPath() . '/images/' . $newFileName);
+
+        $md5Hash = md5_file($tmpPath);
+        $ext = ContentTypeService::toExt($contentType);
+        $filePath = $this->app->getWebPath() . '/images/' . $md5Hash . '.' . $ext;
+        rename($tmpPath, $filePath);
+        return ConvertService::packmd5($md5Hash) . '.' . $ext;
     }
 
-
-    private function getFileName($file, $contentType)
-    {
-        $hash = md5_file($file);
-        $ext = $this->getExtByContentType($contentType);
-        return $hash . '.' . $ext;
-    }
-
-    public function getExtByContentType($contenType)
-    {
-        switch ($contenType) {
-            case 'image/png':
-                return 'png';
-            case 'image/gif':
-                return 'gif';
-            case 'image/jpg':
-            case 'image/jpeg':
-                return 'jpg';
-        }
-        throw new \Exception('Ext not exist for :' . $contenType);
-    }
 
 }
