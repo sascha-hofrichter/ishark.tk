@@ -6,7 +6,7 @@
     <?php
 
     foreach ($this->images as $image) {
-        $thumb = str_replace('.', '.thumb.', $image);
+        $thumb = substr($image, 0, -4) . '.thumb.jpg';
         ?>
         <li>
             <a class="thumbnail" href="http://<?php echo $this->domain ?>/<?php echo $image ?>" target="_blank">
