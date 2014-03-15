@@ -26,6 +26,8 @@ class ImageController extends BaseController
         $tmpPah = $uploadService->fromRaw($content);
         $filename = $uploadService->saveFile($tmpPah);
 
+        $this->getApp()->getLoggerUploads()->addInfo(sprintf('File %s by %s with API', $filename, $_SERVER['REMOTE_ADDR']));
+
         return JsonResponse::create(array('filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/' . $filename), 201);
     }
 

@@ -9,7 +9,8 @@
         "kriswallsmith/buzz": ">=0.5.0",
         "phpunit/phpunit": "3.7.*@stable",
         "league/plates": "1.0.*",
-        "symfony/yaml": "2.4.*"
+        "symfony/yaml": "2.4.*",
+        "monolog/monolog": "@stable"
     },
     "config": {
         "bin-dir": "bin/"

@@ -6,6 +6,8 @@ use Ishark\Controller\AdminController;
 use Ishark\Controller\HomeController;
 use Ishark\Controller\ImageController;
 use Ishark\Services\UploadService;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
@@ -54,7 +56,12 @@ class Application extends \Silex\Application
             return Yaml::parse($app->getRootPath() . '/config.yml');
         });
 
-
+        // logger
+        $this['logger.uploads'] = $this->share(function () use ($app) {
+            $log = new Logger('uploads');
+            $log->pushHandler(new StreamHandler($app->getRootPath() . '/logs/uploads.log', Logger::INFO));
+            return $log;
+        });
     }
 
     /**
@@ -99,5 +106,13 @@ class Application extends \Silex\Application
     public function getConfig()
     {
         return $this['config'];
+    }
+
+    /**
+     * @return Logger
+     */
+    public function getLoggerUploads()
+    {
+        return $this['logger.uploads'];
     }
 } 

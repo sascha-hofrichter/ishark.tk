@@ -14,8 +14,7 @@ class HomeController extends BaseController
      */
     public function indexAction()
     {
-        $template = $this->app->getTemplate();
-        return Response::create($template->render('home::index'));
+        return Response::create($this->app->getTemplate()->render('home::index'));
     }
 
     /**
@@ -40,6 +39,8 @@ class HomeController extends BaseController
 
         $thumbPath = 'http://' . $this->getApp()->getDomain() . '/' . str_replace('.', '.thumb.', $filename);
         $picPath = 'http://' . $this->getApp()->getDomain() . '/' . $filename;
+
+        $this->getApp()->getLoggerUploads()->addInfo(sprintf('File %s by %s with Web', $filename, $_SERVER['REMOTE_ADDR']));
 
         return Response::create($this->app->getTemplate()->render('home::upload',
             array(
@@ -69,6 +70,8 @@ class HomeController extends BaseController
 
         $thumbPath = 'http://' . $this->getApp()->getDomain() . '/' . str_replace('.', '.thumb.', $filename);
         $picPath = 'http://' . $this->getApp()->getDomain() . '/' . $filename;
+
+        $this->getApp()->getLoggerUploads()->addInfo(sprintf('File %s by %s with URL', $filename, $_SERVER['REMOTE_ADDR']));
 
         return Response::create($this->app->getTemplate()->render('home::upload',
             array(
