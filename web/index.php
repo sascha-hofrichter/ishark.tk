@@ -9,8 +9,8 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 $app = new Ishark\Application();
 $app['debug'] = true;
-#error_reporting(E_ALL);
-#ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $app->get('/api/test', function () use ($app) {
     return $app['controller.api.image']->testAction($app->getRequest());
@@ -36,6 +36,10 @@ $app->get('/{image}', function ($image) use ($app) {
 
 $app->post('/upload', function () use ($app) {
     return $app['controller.home']->uploadAction($app->getRequest());
+});
+
+$app->post('/uploadURL', function () use ($app) {
+    return $app['controller.home']->uploadUrlAction($app->getRequest());
 });
 
 $app->get('/', function () use ($app) {

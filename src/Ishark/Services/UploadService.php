@@ -6,6 +6,7 @@ use Ishark\Application;
 
 class UploadService
 {
+    public static $maxFileSize = 5242880;
 
     /** @var \Ishark\Application */
     protected $app;
@@ -47,6 +48,22 @@ class UploadService
     }
 
     /**
+     * @param $url
+     * @return string
+     * @throws \Exception
+     */
+    public function fromUrl($url)
+    {
+        $filesize = $this->curl_get_file_size($url);
+
+        if ($filesize == -1 || $filesize > self::$maxFileSize) {
+            throw new \Exception('File to big...', 400);
+        }
+
+        return $this->fromRaw(file_get_contents($url));
+    }
+
+    /**
      * @param string $tmpPath
      *
      * @return string
@@ -68,7 +85,7 @@ class UploadService
             throw $e;
         }
 
-        if (filesize($tmpPath) > 5242880) {
+        if (filesize($tmpPath) > self::$maxFileSize) {
             unlink($tmpPath);
             throw new \Exception('File to big...', 400);
         }
@@ -88,5 +105,52 @@ class UploadService
         return ConvertService::packmd5($md5Hash) . '.' . $ext;
     }
 
+    /**
+     * Returns the size of a file without downloading it, or -1 if the file
+     * size could not be determined.
+     *
+     * @param $url - The location of the remote file to download. Cannot
+     * be null or empty.
+     *
+     * @return The size of the file referenced by $url, or -1 if the size
+     * could not be determined.
+     * @link http://stackoverflow.com/questions/2602612/php-remote-file-size-without-downloading-file
+     */
+    private function curl_get_file_size($url)
+    {
+        // Assume failure.
+        $result = -1;
 
+        $curl = curl_init($url);
+
+        // Issue a HEAD request and follow any redirects.
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        #curl_setopt($curl, CURLOPT_USERAGENT, get_user_agent_string());
+
+        $data = curl_exec($curl);
+        curl_close($curl);
+
+        if ($data) {
+            $content_length = "unknown";
+            $status = "unknown";
+
+            if (preg_match("/^HTTP\/1\.[01] (\d\d\d)/", $data, $matches)) {
+                $status = (int)$matches[1];
+            }
+
+            if (preg_match("/Content-Length: (\d+)/", $data, $matches)) {
+                $content_length = (int)$matches[1];
+            }
+
+            // http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+            if ($status == 200 || ($status > 300 && $status <= 308)) {
+                $result = $content_length;
+            }
+        }
+
+        return $result;
+    }
 }

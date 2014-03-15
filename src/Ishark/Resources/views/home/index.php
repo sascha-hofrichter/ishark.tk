@@ -29,6 +29,6 @@
         </div>
     </div>
 </form>
-<form method="post" id="frm2">
+<form action="/uploadURL" method="post" id="frm2">
     <input type="hidden" name="url" id="url"/>
 </form>
