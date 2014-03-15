@@ -7,6 +7,7 @@ use Ishark\Controller\HomeController;
 use Ishark\Controller\ImageController;
 use Ishark\Services\UploadService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 class Application extends \Silex\Application
 {
@@ -48,6 +49,12 @@ class Application extends \Silex\Application
             return $template;
         });
 
+        // Config
+        $this['config'] = $this->share(function () use ($app) {
+            return Yaml::parse($app->getRootPath() . '/config.yml');
+        });
+
+
     }
 
     /**
@@ -87,5 +94,10 @@ class Application extends \Silex\Application
     public function getDomain()
     {
         return $_SERVER['SERVER_NAME'];
+    }
+
+    public function getConfig()
+    {
+        return $this['config'];
     }
 } 
