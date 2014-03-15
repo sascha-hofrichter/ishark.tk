@@ -68,9 +68,13 @@ class UploadService
             throw $e;
         }
 
+        if (filesize($tmpPath) > 5242880) {
+            unlink($tmpPath);
+            throw new \Exception('File to big...', 400);
+        }
+
         $md5Hash = md5_file($tmpPath);
         $ext = ContentTypeService::toExt($contentType);
-
 
         $pathDir = $this->app->getRootPath() . '/images/';
         $subDir = substr($md5Hash, 0, 2);
