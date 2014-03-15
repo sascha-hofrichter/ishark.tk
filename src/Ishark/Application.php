@@ -77,6 +77,6 @@ class Application extends \Silex\Application
 
     public function getDomain()
     {
-        return 'new.ishark.tk';
+        return $_SERVER['SERVER_NAME'];
     }
 } 
