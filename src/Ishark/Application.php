@@ -4,6 +4,7 @@ namespace Ishark;
 
 use Ishark\Controller\AdminController;
 use Ishark\Controller\HomeController;
+use Ishark\Controller\ImageController;
 use Ishark\Services\UploadService;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,6 +25,9 @@ class Application extends \Silex\Application
         });
         $this['controller.admin'] = $this->share(function () use ($app) {
             return new AdminController($app);
+        });
+        $this['controller.image'] = $this->share(function () use ($app) {
+            return new ImageController($app);
         });
 
         // Service

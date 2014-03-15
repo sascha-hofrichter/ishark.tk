@@ -6,10 +6,11 @@
     <?php
 
     foreach ($this->images as $image) {
+        $thumb = str_replace('.', '.thumb.', $image);
         ?>
         <li>
             <a class="thumbnail" href="http://<?php echo $this->domain ?>/<?php echo $image ?>" target="_blank">
-                <img class="lazy" data-original="<?php echo $image ?>" style="width: 100px;height: 100px">
+                <img class="lazy" data-original="<?php echo $thumb ?>" style="width: 100px;height: 100px">
             </a>
         </li>
     <?php

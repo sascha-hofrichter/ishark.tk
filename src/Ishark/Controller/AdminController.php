@@ -16,7 +16,7 @@ class AdminController extends BaseController
 
         $timeMapping = array();
         $imageList = array();
-        foreach (scandir($path) as $subDir) if ($subDir != '.' && $subDir != '..') {
+        foreach (scandir($path) as $subDir) if ($subDir != '.' && $subDir != '..' && $subDir != '.gitkeep') {
             foreach (scandir($path . '/' . $subDir) as $file) if ($file != '.' && $file != '..') {
                 $filePath = $path . '/' . $subDir . '/' . $file;
                 $time = filemtime($filePath) * 100000;
