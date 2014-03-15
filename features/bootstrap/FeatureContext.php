@@ -26,7 +26,7 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
-        $this->baseUrl = 'http://localhost:8080';
+        $this->baseUrl = 'http://new.ishark.tk';
         // Initialize your context here
         $this->useContext('WebApiContext', new \WebApiContext($this->baseUrl));
     }

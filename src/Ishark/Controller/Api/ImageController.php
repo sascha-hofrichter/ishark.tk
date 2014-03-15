@@ -24,9 +24,9 @@ class ImageController extends BaseController
         $app = $this->getApp();
         $uploadService = $app['service.upload'];
         $tmpPah = $uploadService->fromRaw($content);
-        $filename = $uploadService->saveFile($content, $tmpPah);
+        $filename = $uploadService->saveFile($tmpPah);
 
-        return JsonResponse::create(['filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/' . $filename], 201);
+        return JsonResponse::create(array('filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/' . $filename), 201);
     }
 
 } 

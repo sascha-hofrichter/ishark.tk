@@ -14,18 +14,7 @@ Feature: API Test
     #Then print response
     Then the response code should be 201
 
-
-  Scenario: Send PNG Image with wrong Content-Type
-    Given I set header "Content-Type" with value "image/bla"
-    When I send a POST request to "/api/image" with raw file body:
-    """
-      hRoCX3Jpe96eggiZ4NqMJA.png
-    """
-    #Then print response
-    Then the response code should be 500
-
   Scenario: Send Fake Image with fake Content-Type
-    Given I set header "Content-Type" with value "image/png"
     When I send a POST request to "/api/image" with raw file body:
     """
       api.feature
