@@ -56,6 +56,6 @@ class HomeController extends BaseController
         $filename = $uploadService->saveFile($tmpPah);
 
         $template = $this->app->getTemplate();
-        return Response::create($template->render('home::upload', array('file' => $filename)));
+        return Response::create($template->render('home::upload', array('file' => $filename, 'domain' => $this->getApp()->getDomain())));
     }
 } 

@@ -74,4 +74,9 @@ class Application extends \Silex\Application
     {
         return $this['template'];
     }
+
+    public function getDomain()
+    {
+        return 'new.ishark.tk';
+    }
 } 

@@ -26,7 +26,7 @@ class ImageController extends BaseController
         $tmpPah = $uploadService->fromRaw($content);
         $filename = $uploadService->saveFile($content, $tmpPah);
 
-        return JsonResponse::create(['filename' => $filename, 'url' => 'http://ishark.tk/' . $filename], 201);
+        return JsonResponse::create(['filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/' . $filename], 201);
     }
 
 } 

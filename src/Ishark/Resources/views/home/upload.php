@@ -3,9 +3,9 @@
 
 <div id="txt1">
     <h1>Upload fertig.</h1><br />
-    <img width="100" height="100" src="http://new.ishark.tk/<?php echo $this->file; ?>" alt="Hochgeladenes Bild." />
+    <img width="100" height="100" src="http://<?php echo $this->domain; ?>/<?php echo $this->file; ?>" alt="Hochgeladenes Bild." />
     <label for="url1">Direktlink</label>
-    <input type="text" id="url1" onclick="select()" value="http://new.ishark.tk/<?php echo $this->file; ?>" /><br />
+    <input type="text" id="url1" onclick="select()" value="http://<?php echo $this->domain; ?>/<?php echo $this->file; ?>" /><br />
 
     <!--
     <label for="url5">Link zum Bild für ESL.EU</label>
