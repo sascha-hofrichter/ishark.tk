@@ -41,6 +41,8 @@ class AdminController extends BaseController
             }
         }
 
+        krsort($imageList);
+
         $template = $this->app->getTemplate();
         return Response::create($template->render('admin::index', array('images' => $imageList, 'domain' => $this->getApp()->getDomain())));
     }
