@@ -38,8 +38,15 @@ class HomeController extends BaseController
         $tmpPath = $uploadService->fromFile($img);
         $filename = $uploadService->saveFile($tmpPath);
 
-        $template = $this->app->getTemplate();
-        return Response::create($template->render('home::upload', array('file' => $filename, 'domain' => $this->getApp()->getDomain())));
+        $thumbPath = 'http://' . $this->getApp()->getDomain() . '/' . str_replace('.', '.thumb.', $filename);
+        $picPath = 'http://' . $this->getApp()->getDomain() . '/' . $filename;
+
+        return Response::create($this->app->getTemplate()->render('home::upload',
+            array(
+                'thumbPath' => $thumbPath,
+                'picPath' => $picPath
+            )
+        ));
     }
 
     /**
@@ -60,7 +67,15 @@ class HomeController extends BaseController
         $tmpPath = $uploadService->fromUrl($url);
         $filename = $uploadService->saveFile($tmpPath);
 
-        return Response::create($this->app->getTemplate()->render('home::upload', array('file' => $filename, 'domain' => $this->getApp()->getDomain())));
+        $thumbPath = 'http://' . $this->getApp()->getDomain() . '/' . str_replace('.', '.thumb.', $filename);
+        $picPath = 'http://' . $this->getApp()->getDomain() . '/' . $filename;
+
+        return Response::create($this->app->getTemplate()->render('home::upload',
+            array(
+                'thumbPath' => $thumbPath,
+                'picPath' => $picPath
+            )
+        ));
     }
 
 
