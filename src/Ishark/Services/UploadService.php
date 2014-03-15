@@ -16,36 +16,70 @@ class UploadService
     }
 
     /**
+     * @return string
+     */
+    private function getTmpPath()
+    {
+        return tempnam($this->app->getRootPath() . '/tmp', 'up_');
+    }
+
+    /**
      * @param string $content
-     * @param string $contentType
+     * @return string
+     */
+    public function fromRaw($content)
+    {
+        $tmpPath = $this->getTmpPath();
+        file_put_contents($tmpPath, $content);
+        return $tmpPath;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
+     * @return string
+     */
+    public function fromFile(\Symfony\Component\HttpFoundation\File\UploadedFile $file)
+    {
+        $tmpPath = $this->getTmpPath();
+        $pathInfo = pathinfo($tmpPath);
+        $file->move($pathInfo['dirname'], $pathInfo['filename']);
+        return $tmpPath;
+    }
+
+    /**
+     * @param string $tmpPath
      *
      * @return string
      * @throws \Exception
      */
-    public function saveFile($content, $contentType)
+    public function saveFile($tmpPath)
     {
-        $tmpPath = tempnam($this->app->getRootPath() . '/tmp', 'up_');
-        file_put_contents($tmpPath, $content);
-
         $imageInfo = getimagesize($tmpPath);
         if (!$imageInfo) {
             unlink($tmpPath);
-            throw new \Exception('No Image uploaded', 500);
+            throw new \Exception('No Image uploaded', 400);
         }
 
-        if (array_key_exists('mime', $imageInfo)) {
-            $contentType = $imageInfo['mime'];
-            try {
-                ContentTypeService::check($imageInfo['mime']);
-            } catch (\Exception $e) {
-                unlink($tmpPath);
-                throw $e;
-            }
+        $contentType = $imageInfo['mime'];
+        try {
+            ContentTypeService::check($contentType);
+        } catch (\Exception $e) {
+            unlink($tmpPath);
+            throw $e;
         }
 
         $md5Hash = md5_file($tmpPath);
         $ext = ContentTypeService::toExt($contentType);
-        $filePath = $this->app->getWebPath() . '/images/' . $md5Hash . '.' . $ext;
+
+
+        $pathDir = $this->app->getRootPath() . '/images/';
+        $subDir = substr($md5Hash, 0, 2);
+
+        if (!is_dir($pathDir . $subDir)) {
+            mkdir($pathDir . $subDir);
+        }
+
+        $filePath = $pathDir . $subDir . '/' . $md5Hash . '.' . $ext;
         rename($tmpPath, $filePath);
         return ConvertService::packmd5($md5Hash) . '.' . $ext;
     }

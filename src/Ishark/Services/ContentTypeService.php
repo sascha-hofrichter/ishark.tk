@@ -13,7 +13,7 @@ class ContentTypeService
     public static function check($contentType)
     {
         if (!in_array($contentType, array('image/png', 'image/gif', 'image/jpg', 'image/jpeg'))) {
-            throw new \Exception('Wrong Content-Type', 500);
+            throw new \Exception('Wrong Content-Type', 400);
         }
     }
 
@@ -28,7 +28,7 @@ class ContentTypeService
             case 'image/jpeg':
                 return 'jpg';
         }
-        throw new \Exception('Ext not exist for :' . $contenType);
+        throw new \Exception('Ext not exist for :' . $contenType, 400);
     }
 
     public static function toType($ext)
@@ -42,7 +42,7 @@ class ContentTypeService
             case 'jpeg':
                 return 'image/jpg';
         }
-        throw new \Exception('Content-Type not exist for :' . $ext);
+        throw new \Exception('Content-Type not exist for :' . $ext, 400);
     }
 
 

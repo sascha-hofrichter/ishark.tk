@@ -20,10 +20,10 @@
 <![endif]-->
 
 <div id="bd">
-    <a href="/" id="hdl"> </a>
-    <div id="hdr"><a href="http://patromo.de" target="_blank" id="patromo">&nbsp;</a></div><br clear="all" />
-    <?= $this->child() ?>
-
+    <a href="/" id="hdl"></a>
+    <div id="hdr"></div>
+    <br clear="all"/>
+    <?php echo $this->child() ?>
 
 </div>
 <div class="linkbar">

@@ -1,7 +1,7 @@
 <?php $this->layout('layout') ?>
 
 <div id="txt1">Ein-Klick-Bilderspeicher. Maximale Dateigröße: <strong>5 Megabyte</strong>. <br /> Erlaubte Dateitypen: <strong>JPEG, PNG und GIF</strong> </div>
-<form method="post" enctype="multipart/form-data" id="frm"><div id="ub">
+<form action="/upload" method="post" enctype="multipart/form-data" id="frm"><div id="ub">
         <span id="ubt" style="display: none;">Lade hoch...</span>
         <span id="ubk" style="display: none;">Kopiere Bild...<br /><br /></span>
         <div id="ubh">
