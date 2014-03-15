@@ -9,8 +9,8 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 $app = new Ishark\Application();
 $app['debug'] = true;
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+#error_reporting(E_ALL);
+#ini_set('display_errors', 1);
 
 $app->get('/api/test', function () use ($app) {
     return $app['controller.api.image']->testAction($app->getRequest());
