@@ -29,7 +29,7 @@
 <div class="linkbar">
     <div class="lbcc">
         <a href="http://www.codermeister.de" target="_blank" class="cm"><span>A</span> <img class="cmi" width="123" height="32" src="img/spacer.gif" alt="" /> <span>Project.</span></a>
-        <a href="ISharkUploader-v1.1.exe" target="_blank" class="air" >ImageShark-Uploader v1.1 installieren</a>
+        <a href="IShark-Uploader.exe" target="_blank" class="air" >ImageShark-Uploader v1.2 herrunterladen</a>
     </div>
 </div>
 
