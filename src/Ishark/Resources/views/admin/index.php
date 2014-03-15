@@ -1,6 +1,7 @@
 <?php $this->layout('admin::layout') ?>
 
-<h1>Admin <?php echo count($this->images) ?> Images </h1>
+<h1>Admin</h1>
+<h2><?php echo count($this->images) ?> Images / <?php echo $this->filesize ?> GB</h2>
 
 <ul class="list-unstyled list-inline">
     <?php

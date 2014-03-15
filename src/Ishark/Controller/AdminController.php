@@ -26,7 +26,7 @@ class AdminController extends BaseController
         }
 
         $path = $this->getApp()->getRootPath() . '/images';
-
+        $filsize = 0;
         $timeMapping = array();
         $imageList = array();
         foreach (scandir($path) as $subDir) if ($subDir != '.' && $subDir != '..' && $subDir != '.gitkeep') {
@@ -36,15 +36,24 @@ class AdminController extends BaseController
                 $time += $timeMapping[$time]++;
 
                 $pathInfo = pathinfo($file);
-
+                $filsize += filesize($filePath);
                 $imageList[$time] = ConvertService::packmd5($pathInfo['basename']) . '.' . $pathInfo['extension'];
             }
         }
 
         krsort($imageList);
 
+        $filsize = $filsize / 1024 / 1024 / 1024;
+
         $template = $this->app->getTemplate();
-        return Response::create($template->render('admin::index', array('images' => $imageList, 'domain' => $this->getApp()->getDomain())));
+        return Response::create($template->render('admin::index',
+                array(
+                    'images' => $imageList,
+                    'domain' => $this->getApp()->getDomain(),
+                    'filesize' => round($filsize, 2)
+                )
+            )
+        );
     }
 
 } 
