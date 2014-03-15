@@ -2,6 +2,7 @@
 
 namespace Ishark;
 
+use Ishark\Controller\AdminController;
 use Ishark\Controller\HomeController;
 use Ishark\Services\UploadService;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,9 @@ class Application extends \Silex\Application
         $this['controller.home'] = $this->share(function () use ($app) {
             return new HomeController($app);
         });
+        $this['controller.admin'] = $this->share(function () use ($app) {
+            return new AdminController($app);
+        });
 
         // Service
         $this['service.upload'] = $this->share(function () use ($app) {
@@ -33,6 +37,7 @@ class Application extends \Silex\Application
             $viewsPath = __DIR__ . '/Resources/views';
             $engine = new \League\Plates\Engine($viewsPath);
             $engine->addFolder('home', $viewsPath . '/home');
+            $engine->addFolder('admin', $viewsPath . '/admin');
 
             // Create a new template
             $template = new \League\Plates\Template($engine);

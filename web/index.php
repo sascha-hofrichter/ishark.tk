@@ -18,9 +18,14 @@ $app->post('/api/image', function () use ($app) {
     return $app['controller.api.image']->uploadAction($app->getRequest());
 });
 
+$app->get('/admin', function () use ($app) {
+    return $app['controller.admin']->indexAction($app->getRequest());
+});
+
 $app->get('/{image}', function ($image) use ($app) {
     return $app['controller.home']->imageAction($app->getRequest(), $image);
-});
+})
+    ->assert('image', '[a-zA-Z-_0-9]+\.\w{3}');
 
 $app->post('/upload', function () use ($app) {
     return $app['controller.home']->uploadAction($app->getRequest());

@@ -30,6 +30,9 @@ class HomeController extends BaseController
     {
         // remove ext
         $info = pathinfo($image);
+        if ($info['extension'] == null) {
+            throw new \Exception('File not found!', 404);
+        }
         $md5 = ConvertService::unpackmd5($info['filename']);
         $path = $this->getApp()->getRootPath() . '/images/' . substr($md5, 0, 2) . '/' . $md5 . '.' . $info['extension'];
 
