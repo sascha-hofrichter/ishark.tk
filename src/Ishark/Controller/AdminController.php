@@ -48,8 +48,7 @@ class AdminController extends BaseController
 
         $filsize = $filsize / 1024 / 1024 / 1024;
 
-        $template = $this->app->getTemplate();
-        return Response::create($template->render('admin::index',
+        return Response::create($this->app->getTemplate()->render('admin::index',
                 array(
                     'images' => $imageList,
                     'domain' => $this->getApp()->getDomain(),
