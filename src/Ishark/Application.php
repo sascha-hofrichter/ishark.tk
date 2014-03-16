@@ -3,6 +3,7 @@
 namespace Ishark;
 
 use Ishark\Controller\AdminController;
+use Ishark\Controller\Api\ImageController as ApiImageController;
 use Ishark\Controller\HomeController;
 use Ishark\Controller\ImageController;
 use Ishark\Services\ImageService;
@@ -23,6 +24,10 @@ use Symfony\Component\Yaml\Yaml;
  * @method Template getTemplate()
  * @method Request getRequest()
  * @method UploadService getUploadService()
+ * @method ApiImageController getApiImageController()
+ * @method HomeController getHomeController()
+ * @method AdminController getAdminController()
+ * @method ImageController getImageController()
  */
 class Application extends \Silex\Application
 {
@@ -33,16 +38,16 @@ class Application extends \Silex\Application
         $app = $this;
 
         // Controller
-        $this['controller.api.image'] = $this->share(function () use ($app) {
-            return new \Ishark\Controller\Api\ImageController($app);
+        $this['apiImageController'] = $this->share(function () use ($app) {
+            return new ApiImageController($app);
         });
-        $this['controller.home'] = $this->share(function () use ($app) {
+        $this['homeController'] = $this->share(function () use ($app) {
             return new HomeController($app);
         });
-        $this['controller.admin'] = $this->share(function () use ($app) {
+        $this['adminController'] = $this->share(function () use ($app) {
             return new AdminController($app);
         });
-        $this['controller.image'] = $this->share(function () use ($app) {
+        $this['imageController'] = $this->share(function () use ($app) {
             return new ImageController($app);
         });
 

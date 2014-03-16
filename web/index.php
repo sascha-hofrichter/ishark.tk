@@ -15,38 +15,34 @@ if ($app->getDomain() != 'ishark.tk') {
     ini_set('display_errors', 1);
 }
 
-$app->get('/api/test', function () use ($app) {
-    return $app['controller.api.image']->testAction($app->getRequest());
-});
-
 $app->post('/api/image', function () use ($app) {
-    return $app['controller.api.image']->uploadAction($app->getRequest());
+    return $app->getApiImageController()->uploadAction($app->getRequest());
 });
 
 $app->get('/admin', function () use ($app) {
-    return $app['controller.admin']->indexAction($app->getRequest());
+    return $app->getAdminController()->indexAction($app->getRequest());
 });
 
 $app->get('/{image}', function ($image) use ($app) {
-    return $app['controller.image']->imageAction($app->getRequest(), $image);
+    return $app->getImageController()->imageAction($app->getRequest(), $image);
 })
     ->assert('image', '[a-zA-Z-_0-9]+\.\w{3}');
 
 $app->get('/{image}', function ($image) use ($app) {
-    return $app['controller.image']->imageThumbAction($app->getRequest(), $image);
+    return $app->getImageController()->imageThumbAction($app->getRequest(), $image);
 })
     ->assert('image', '[a-zA-Z-_0-9]+\.thumb\.\w{3}');
 
 $app->post('/upload', function () use ($app) {
-    return $app['controller.home']->uploadAction($app->getRequest());
+    return $app->getHomeController()->uploadAction($app->getRequest());
 });
 
 $app->post('/uploadURL', function () use ($app) {
-    return $app['controller.home']->uploadUrlAction($app->getRequest());
+    return $app->getHomeController()->uploadUrlAction($app->getRequest());
 });
 
 $app->get('/', function () use ($app) {
-    return $app['controller.home']->indexAction($app->getRequest());
+    return $app->getHomeController()->indexAction($app->getRequest());
 });
 
 

@@ -33,11 +33,14 @@ class AdminController extends BaseController
             foreach (scandir($path . '/' . $subDir) as $file) if ($file != '.' && $file != '..') {
                 $filePath = $path . '/' . $subDir . '/' . $file;
                 $time = filemtime($filePath) * 100000;
+                if (!array_key_exists($time, $timeMapping)) {
+                    $timeMapping[$time] = 0;
+                }
                 $time += $timeMapping[$time]++;
 
                 $pathInfo = pathinfo($file);
                 $filsize += filesize($filePath);
-                $imageList[$time] = ConvertService::packmd5($pathInfo['basename']) . '.' . $pathInfo['extension'];
+                $imageList[$time] = ConvertService::packmd5($pathInfo['filename']) . '.' . $pathInfo['extension'];
             }
         }
 
