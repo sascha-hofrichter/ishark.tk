@@ -2,7 +2,6 @@
 
 namespace Ishark\Controller;
 
-use Ishark\Services\UploadService;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,9 +30,7 @@ class HomeController extends BaseController
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $img */
         $img = $files->get('img');
 
-        $app = $this->getApp();
-        /** @var UploadService $uploadService */
-        $uploadService = $app['service.upload'];
+        $uploadService = $this->getApp()->getUploadService();
         $tmpPath = $uploadService->fromFile($img);
         $filename = $uploadService->saveFile($tmpPath);
 
@@ -62,9 +59,7 @@ class HomeController extends BaseController
             throw new \Exception('URL missing', 400);
         }
 
-        $app = $this->getApp();
-        /** @var UploadService $uploadService */
-        $uploadService = $app['service.upload'];
+        $uploadService = $this->getApp()->getUploadService();
         $tmpPath = $uploadService->fromUrl($url);
         $filename = $uploadService->saveFile($tmpPath);
 

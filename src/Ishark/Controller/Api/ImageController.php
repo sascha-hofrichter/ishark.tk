@@ -11,18 +11,16 @@ use Symfony\Component\HttpFoundation\Response;
 class ImageController extends BaseController
 {
 
-    public function testAction(Request $request)
-    {
-        return Response::create('test');
-    }
-
+    /**
+     * @param Request $request
+     * @return Response|static
+     */
     public function uploadAction(Request $request)
     {
         $content = $request->getContent();
 
         /** @var UploadService $uploadService */
-        $app = $this->getApp();
-        $uploadService = $app['service.upload'];
+        $uploadService = $this->getApp()->getUploadService();
         $tmpPah = $uploadService->fromRaw($content);
         $filename = $uploadService->saveFile($tmpPah);
 

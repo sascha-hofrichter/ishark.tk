@@ -5,12 +5,25 @@ namespace Ishark;
 use Ishark\Controller\AdminController;
 use Ishark\Controller\HomeController;
 use Ishark\Controller\ImageController;
+use Ishark\Services\ImageService;
 use Ishark\Services\UploadService;
+use League\Plates\Engine;
+use League\Plates\Template;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class Application
+ * @package Ishark
+ * @method ImageService getImageService()
+ * @method Logger getLoggerUploads()
+ * @method array getConfig()
+ * @method Template getTemplate()
+ * @method Request getRequest()
+ * @method UploadService getUploadService()
+ */
 class Application extends \Silex\Application
 {
     public function __construct(array $values = array())
@@ -34,20 +47,23 @@ class Application extends \Silex\Application
         });
 
         // Service
-        $this['service.upload'] = $this->share(function () use ($app) {
+        $this['uploadService'] = $this->share(function () use ($app) {
             return new UploadService($app);
+        });
+        $this['imageService'] = $this->share(function () use ($app) {
+            return new ImageService($app);
         });
 
         // Template
         $this['template'] = $this->share(function () use ($app) {
             // Create new Plates engine
             $viewsPath = __DIR__ . '/Resources/views';
-            $engine = new \League\Plates\Engine($viewsPath);
+            $engine = new Engine($viewsPath);
             $engine->addFolder('home', $viewsPath . '/home');
             $engine->addFolder('admin', $viewsPath . '/admin');
 
             // Create a new template
-            $template = new \League\Plates\Template($engine);
+            $template = new Template($engine);
             return $template;
         });
 
@@ -57,21 +73,12 @@ class Application extends \Silex\Application
         });
 
         // logger
-        $this['logger.uploads'] = $this->share(function () use ($app) {
+        $this['loggerUploads'] = $this->share(function () use ($app) {
             $log = new Logger('uploads');
             $log->pushHandler(new StreamHandler($app->getRootPath() . '/logs/uploads.log', Logger::INFO));
             return $log;
         });
     }
-
-    /**
-     * @return Request
-     */
-    public function getRequest()
-    {
-        return $this['request'];
-    }
-
 
     /**
      * @return string
@@ -89,30 +96,27 @@ class Application extends \Silex\Application
         return __DIR__ . '/../..';
     }
 
-
     /**
-     * @return \League\Plates\Template
+     * @return string
      */
-    public function getTemplate()
-    {
-        return $this['template'];
-    }
-
     public function getDomain()
     {
         return $_SERVER['SERVER_NAME'];
     }
 
-    public function getConfig()
-    {
-        return $this['config'];
-    }
-
     /**
-     * @return Logger
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     * @throws \Exception
      */
-    public function getLoggerUploads()
+    function __call($name, $arguments)
     {
-        return $this['logger.uploads'];
+        $offset = lcfirst(substr($name, 3));
+        if ($this->offsetExists($offset)) {
+            return $this[$offset];
+        }
+        throw new \Exception('Call to undefined method.');
     }
 } 

@@ -4,17 +4,9 @@ namespace Ishark\Services;
 
 use Ishark\Application;
 
-class UploadService
+class UploadService extends BaseService
 {
     public static $maxFileSize = 5242880;
-
-    /** @var \Ishark\Application */
-    protected $app;
-
-    function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * @return string
