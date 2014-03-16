@@ -7,6 +7,7 @@ use Ishark\Controller\Api\ImageController as ApiImageController;
 use Ishark\Controller\HomeController;
 use Ishark\Controller\ImageController;
 use Ishark\Services\ImageService;
+use Ishark\Services\SecurityService;
 use Ishark\Services\UploadService;
 use League\Plates\Engine;
 use League\Plates\Template;
@@ -24,6 +25,7 @@ use Symfony\Component\Yaml\Yaml;
  * @method Template getTemplate()
  * @method Request getRequest()
  * @method UploadService getUploadService()
+ * @method SecurityService getSecurityService()
  * @method ApiImageController getApiImageController()
  * @method HomeController getHomeController()
  * @method AdminController getAdminController()
@@ -58,6 +60,10 @@ class Application extends \Silex\Application
         $this['imageService'] = $this->share(function () use ($app) {
             return new ImageService($app);
         });
+        $this['securityService'] = $this->share(function () use ($app) {
+            return new SecurityService($app);
+        });
+
 
         // Template
         $this['template'] = $this->share(function () use ($app) {
