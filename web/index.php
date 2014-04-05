@@ -19,6 +19,10 @@ $app->post('/api/image', function () use ($app) {
     return $app->getApiImageController()->uploadAction($app->getRequest());
 });
 
+$app->post('/api/uploadURL', function () use ($app) {
+    return $app->getApiImageController()->uploadUrlAction($app->getRequest());
+});
+
 $app->get('/admin', function () use ($app) {
     return $app->getAdminController()->indexAction($app->getRequest());
 });
