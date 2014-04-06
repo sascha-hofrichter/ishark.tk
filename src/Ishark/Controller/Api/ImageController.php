@@ -55,7 +55,7 @@ class ImageController extends BaseController
 
             // save image into the 'image' directory
             $filename = $uploadService->saveFile($tmpPath);
-            return JsonResponse::create(array('filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/ishark/web/' . $filename), 201);
+            return JsonResponse::create(array('filename' => $filename, 'url' => 'http://' . $this->getApp()->getDomain() . '/' . $filename), 201);
         } catch (\Exception $ex) {
             // Can't download or save the image
             return JsonResponse::create(array('message' => $ex->getMessage()), 400);
